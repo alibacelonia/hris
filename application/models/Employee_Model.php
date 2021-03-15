@@ -9,7 +9,7 @@ class Employee_Model extends CI_Model{
 	public function get_employees()
     {
 		
-		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate, position, date_hired, employee_type as type, status,leave_credits as credits,date_updated")
+		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate,elem_school,elem_from,elem_to,hs_school,hs_from,hs_to,college_school, college_course, college_from, college_to, position, date_hired, employee_type as type, status,leave_credits as credits,salary,date_updated,we_agency1,we_position1,we_from1,we_to1,we_salary1,we_agency2,we_position2,we_from2,we_to2,we_salary2,we_agency3,we_position3,we_from3,we_to3,we_salary3,we_agency4,we_position4,we_from4,we_to4,we_salary4")
 				->get('employees');
 		
 		$result = $query->result_array();

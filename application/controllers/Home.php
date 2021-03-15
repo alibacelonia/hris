@@ -153,6 +153,34 @@ class Home extends CI_Controller {
 		}
 
 	}
+
+	public function employee_details()
+	{
+		
+		$id = base64_decode(base64_decode($this->uri->segment(3)));
+		
+		$data['employee'] = $this->employee->get_employee_details(array("id"=>$id));
+
+		$data['id'] = $id;
+		$data["title"] = "Employee Details";
+		$data["current_page"] = "employees";
+		$session_data = $this->session->userdata('user');
+		if(isset($session_data)){
+			$data['user_details'] = $this->user->get_user_details(array("id"=>$session_data['id']));
+			// var_dump($data);
+			$this->load->view('templates/styles',$data);
+			$this->load->view('templates/header',$data);
+			$this->load->view('templates/topbar',$data);
+			$this->load->view('templates/sidebar',$data);
+			$this->load->view('admin/employee_details',$data);
+			$this->load->view('templates/footer');
+			$this->load->view('templates/scripts');
+		}
+		else{
+			redirect(base_url());
+		}
+
+	}
 	public function edit_applicant()
 	{
 		
@@ -186,17 +214,63 @@ class Home extends CI_Controller {
 		$id = base64_decode(base64_decode($tempid));
 		$flag = $this->input->post('flag');
 
+
+		//personal info
 		$firstname = $this->input->post('firstname');
 		$middlename = $this->input->post('middlename');
 		$lastname = $this->input->post('lastname');
 		$sex = $this->input->post('sex');
 		$birthdate = $this->input->post('birthdate');
-		
+
+		//educational background
+        $elem_school = $this->input->post('elem_school');
+        $elem_from = $this->input->post('elem_from');
+        $elem_to = $this->input->post('elem_to');
+        $hs_school = $this->input->post('hs_school');
+		$hs_from = $this->input->post('hs_from');
+		$hs_to = $this->input->post('hs_to');
+        $college_school = $this->input->post('college_school');
+        $college_course = $this->input->post('college_course');
+        $college_from = $this->input->post('college_from');
+        $college_to = $this->input->post('college_to');
+
+		//empoyment info
         $position = $this->input->post('position');
         $date_hired = $this->input->post('date_hired');
         $employee_type = $this->input->post('employee_type');
         $status = $this->input->post('status');
-        $leave_credits = $this->input->post('leave_credits');
+		$leave_credits = $this->input->post('leave_credits');
+		$salary = $this->input->post('salary');
+
+		
+		//work history
+        $we_agency1 = $this->input->post('we_agency1');
+        $we_position1 = $this->input->post('we_position1');
+        $we_from1 = $this->input->post('we_from1');
+        $we_to1 = $this->input->post('we_to1');
+		$we_salary1 = $this->input->post('we_salary1');
+
+        $we_agency2 = $this->input->post('we_agency2');
+        $we_position2 = $this->input->post('we_position2');
+        $we_from2 = $this->input->post('we_from2');
+        $we_to2 = $this->input->post('we_to2');
+		$we_salary2 = $this->input->post('we_salary2');
+		
+        $we_agency3 = $this->input->post('we_agency3');
+        $we_position3 = $this->input->post('we_position3');
+        $we_from3 = $this->input->post('we_from3');
+        $we_to3 = $this->input->post('we_to3');
+		$we_salary3 = $this->input->post('we_salary3');
+		
+        $we_agency4 = $this->input->post('we_agency4');
+        $we_position4 = $this->input->post('we_position4');
+        $we_from4 = $this->input->post('we_from4');
+        $we_to4 = $this->input->post('we_to4');
+		$we_salary4 = $this->input->post('we_salary4');
+		
+		
+		$format = "%Y-%m-%d %h:%i %A";
+		$current_date = mdate($format);
 		
 		$data = array(
 					'firstname' => $firstname,
@@ -204,11 +278,46 @@ class Home extends CI_Controller {
 					'lastname' => $lastname,
 					'sex' => $sex,
 					'birthdate' => $birthdate,
+
+					'elem_school' => $elem_school,
+					'elem_from' => $elem_from,
+					'elem_to' => $elem_to,
+					'hs_school' => $hs_school,
+					'hs_from' => $hs_from,
+					'hs_to' => $hs_to,
+					'college_school' => $college_school,
+					'college_course' => $college_course,
+					'college_from' => $college_from,
+					'college_to' => $college_to,
+					
 					'position' => $position,
 					'date_hired' => $date_hired,
 					'employee_type' => $employee_type,
 					'status' => $status,
-					'leave_credits' => $leave_credits
+					'leave_credits' => $leave_credits,
+					'salary' => $salary,
+					'date_updated' => $current_date,
+
+					'we_agency1' => $we_agency1,
+					'we_position1' => $we_position1,
+					'we_from1' => $we_from1,
+					'we_to1' => $we_to1,
+					'we_salary1' => $we_salary1,
+					'we_agency2' => $we_agency2,
+					'we_position2' => $we_position2,
+					'we_from2' => $we_from2,
+					'we_to2' => $we_to2,
+					'we_salary2' => $we_salary2,
+					'we_agency3' => $we_agency3,
+					'we_position3' => $we_position3,
+					'we_from3' => $we_from3,
+					'we_to3' => $we_to3,
+					'we_salary3' => $we_salary3,
+					'we_agency4' => $we_agency4,
+					'we_position4' => $we_position4,
+					'we_from4' => $we_from4,
+					'we_to4' => $we_to4,
+					'we_salary4' => $we_salary4
 				);
 		$this->employee->save_employee_changes($id,$flag, $data);
 		if($flag){
