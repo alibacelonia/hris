@@ -1,3 +1,18 @@
+<style>
+
+
+fieldset {
+    margin: 8px;
+    border: 1px solid silver;
+    padding: 8px;    
+    border-radius: 4px;
+}
+legend{
+    padding: 2px;    
+}
+
+</style>
+
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
@@ -84,6 +99,49 @@
                         </div>
                     </div>
 
+                    <div class="col-sm-12 mt-3 mb-1">
+                        <label class="cat-title all-caps">EDUCATIONAL BACKGROUND</label>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>First Name <sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" placeholder="" name="firstname" required value="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Middle Name <sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" placeholder="" name="middlename" required value="">
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Last Name <sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" placeholder="" name="lastname" required value="">
+                        </div>
+                    </div>
+                    
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Gender <sup class="text-danger">*</sup></label>
+                            <select class="form-control" name="sex" required>
+                                <option selected disabled></option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Birthdate <sup class="text-danger">*</sup></label>
+                            <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="birthdate" required value="">
+                        </div>
+                    </div>
+
                     
                     <div class="col-sm-12 mt-3 mb-1">
                         <label class="cat-title all-caps">EMPLOYMENT INFORMATION</label>
@@ -100,7 +158,7 @@
                     
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Date Hired <sup class="text-danger">*</sup></label>
+                            <label>Date Hired/Appointed <sup class="text-danger">*</sup></label>
                             <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="date_hired" required value="<?php echo $employee['date_hired']; ?>">
                         </div>
                     </div>
@@ -131,7 +189,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Leave Credits <sup class="text-danger">*</sup></label>
+                            <label>Leave Credits as of<sup class="text-danger">*</sup></label>
                             <input type="number" <?php echo $employee['employee_type'] == "COS" || $employee['employee_type'] == "JO" ? "readonly" : ""?> class="form-control" placeholder="" name="leave_credits" required value="<?php echo $employee['leave_credits']; ?>">
                         </div>
                         

@@ -237,6 +237,9 @@ class Home extends CI_Controller {
         $application_date = $this->input->post('application_date');
         $status = $this->input->post('status');
 		
+		$format = "%Y-%m-%d %h:%i %A";
+		$current_date = mdate($format);
+
 		$data = array(
 					'firstname' => $firstname,
 					'middlename' => $middlename,
@@ -246,7 +249,9 @@ class Home extends CI_Controller {
 					'position' => $position,
 					'application_date' => $application_date,
 					'status' => $status,
+					'date_updated' => $current_date
 				);
+
 		$this->employee->save_applicant_changes($id,$flag, $data);
 		if($flag){
 			header('location:'.base_url()."home/edit_applicant/".$tempid);
@@ -255,6 +260,64 @@ class Home extends CI_Controller {
 		else{
 			header('location:'.base_url()."home/add_applicant/".$tempid);
 			$this->session->set_flashdata('message','Applicant record is successfully created.');
+		}
+	}
+
+	public function save_account_info()
+	{
+		$session_data = $this->session->userdata('user');
+		$firstname = $this->input->post('firstname');
+		$middlename = $this->input->post('middlename');
+		$lastname = $this->input->post('lastname');
+		$gender = $this->input->post('gender');
+		$phone = $this->input->post('phone');
+		$birthdate = $this->input->post('birthdate');
+		
+		$data = array(
+					'firstname' => $firstname,
+					'middlename' => $middlename,
+					'lastname' => $lastname,
+					'gender' => $gender,
+					'phone' => $phone,
+					'birthdate' => $birthdate
+				);
+		
+		$this->user->save_user_changes($session_data['id'], $data);
+		header('location:'.base_url()."home/account");
+		$this->session->set_flashdata('user_success','Account successfully updated.');
+	}
+
+	public function change_password(){
+		
+		$session_data = $this->session->userdata('user');
+		$password = $this->input->post('current_password');
+		$new_password = $this->input->post('new_password');
+		$confirm_password = $this->input->post('confirm_password');
+		
+		$user = $this->user->get_user_details(array("id"=>$session_data['id']));
+
+		if(password_verify($password,$user['password']) && $new_password == $confirm_password){
+			$data = array(
+				'password' => password_hash($new_password,PASSWORD_BCRYPT)
+			);
+			//var_dump($data);
+			$this->user->save_user_changes($session_data['id'], $data);
+			header('location:'.base_url()."home/account");
+			$this->session->set_flashdata('password_success','You successfully changed your password.');
+		}
+		else{
+			if(!password_verify($password,$user['password'])){
+				header('location:'.base_url()."home/account");
+				$this->session->set_flashdata('password_error','Incorrect password. Please try again.');
+			}
+			else if($new_password != $confirm_password){
+				header('location:'.base_url()."home/account");
+				$this->session->set_flashdata('password_error','Password does not match.');
+			}
+			else if(strlen($new_password) <=5){
+				header('location:'.base_url()."home/myaccount");
+				$this->session->set_flashdata('password_error','Password must atleast 6 characters.');
+			}
 		}
 	}
 

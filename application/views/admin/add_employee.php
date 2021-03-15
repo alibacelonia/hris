@@ -84,6 +84,50 @@
                         </div>
                     </div>
 
+                    <div class="col-sm-12 mt-3 mb-1">
+                        <label class="cat-title all-caps">EDUCATIONAL BACKGROUND</label>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="cat-title all-caps">Elementary</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Name of School<sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" placeholder="" name="firstname" required value="">
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <label>From<sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" placeholder="" name="middlename" required value="">
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <label>To<sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" placeholder="" name="middlename" required value="">
+                        </div>
+                    </div>
+                    
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Gender <sup class="text-danger">*</sup></label>
+                            <select class="form-control" name="sex" required>
+                                <option selected disabled></option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Birthdate <sup class="text-danger">*</sup></label>
+                            <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="birthdate" required value="">
+                        </div>
+                    </div>
                     
                     <div class="col-sm-12 mt-3 mb-1">
                         <label class="cat-title all-caps">EMPLOYMENT INFORMATION</label>
@@ -100,7 +144,7 @@
                     
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Date Hired <sup class="text-danger">*</sup></label>
+                            <label>Date Hired/Appointed<sup class="text-danger">*</sup></label>
                             <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="date_hired" required value="">
                         </div>
                     </div>

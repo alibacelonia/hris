@@ -9,7 +9,7 @@ class Employee_Model extends CI_Model{
 	public function get_employees()
     {
 		
-		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate, position, date_hired, employee_type as type, status,leave_credits as credits")
+		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate, position, date_hired, employee_type as type, status,leave_credits as credits,date_updated")
 				->get('employees');
 		
 		$result = $query->result_array();
@@ -19,7 +19,7 @@ class Employee_Model extends CI_Model{
 	public function get_applicants()
     {
 		
-		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate, position, application_date,status")
+		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate, position, application_date,status,date_updated")
 				->get('applicants');
 		
 		$result = $query->result_array();

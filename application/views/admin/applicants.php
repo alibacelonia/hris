@@ -28,6 +28,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Sex</th>
                     <th>Position Applied</th>
                     <th>Application Date</th>
                     <th>Status</th>
@@ -40,9 +41,18 @@
                     ?>
                     <tr>
                         <td><?php echo $app['name'];?></td>
+                        <td><?php echo $app['sex'] == "F" ? "Female" : "Male";?></td>
                         <td><?php echo $app['position'];?></td>
                         <td><?php echo $app['application_date'];?></td>
-                        <td><?php echo $app['status'];?></td>
+                        <td>
+                            <?php
+                                if($app['status'] == "H"){  $type = "success"; $text = "HIRED"; }
+                                else if($app['status'] == "P"){  $type = "warning"; $text = "PENDING"; }
+                                else if($app['status'] == "R"){  $type = "danger"; $text = "REJECTED"; }
+                                $badge = "<span class='right badge badge-".$type."'>".$text."</span>";
+                                echo $badge
+                            ?>
+                        </td>
                         <td>
                         <a href="<?php echo base_url().'home/edit_applicant/'.(base64_encode(base64_encode($app['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-flat btn-success btn-sm"><i class="fa fa-edit"></i></a>
                         <!-- <a href="<?php echo base_url().'home/edit_employee/'.(base64_encode(base64_encode($app['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Archive" class="btn btn-flat btn-danger btn-sm"><i class="fa fa-file-archive"></i></a> -->

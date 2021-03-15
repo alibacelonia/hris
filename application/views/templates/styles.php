@@ -7,7 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo $title; ?></title>
 
-<link rel="icon" href="<?php echo base_url(); ?>assets/dist/img/dilg-logo.png">
+<!-- <link rel="icon" href="<?php echo base_url(); ?>assets/dist/img/dilg-logo.png"> -->
+<link rel="icon" href="<?php echo base_url(); ?>assets/dist/img/AdminLTELogo.png">
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/dist/css/adminlte.min.css">

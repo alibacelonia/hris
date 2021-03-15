@@ -28,6 +28,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Gender</th>
                     <th>Position</th>
                     <th>Employee Type</th>
                     <th>Leave Credits</th>
@@ -39,12 +40,14 @@
                   <tbody>
                     <?php
                     foreach($emps as $emp){
+                        $current_date = date_create($emp['date_updated']);
                     ?>
                     <tr>
-                        <td><?php echo $emp['name'];?></td>
+                        <td><a href="<?php echo base_url()."home/edit_employee/".base64_encode(base64_encode($emp['id']));?>"><?php echo $emp['name'];?></a></td>
+                        <td><?php echo $emp['sex'] == "F" ? "Female" : "Male";?></td>
                         <td><?php echo $emp['position'];?></td>
                         <td><?php echo $emp['type'];?></td>
-                        <td><?php echo $emp['credits'];?></td>
+                        <td><?php echo $emp['credits']." (as of ".date_format($current_date,"M d Y").")";?></td>
                         <td><?php echo $emp['date_hired'];?></td>
                         <td><?php echo $emp['status'];?></td>
                         <td>

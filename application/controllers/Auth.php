@@ -18,7 +18,7 @@ class Auth extends CI_Controller {
 			redirect(base_url()."home");
 		}
 		else{
-			$this->load->view('login');
+			$this->load->view('login',$data);
 		}
 	}
 	

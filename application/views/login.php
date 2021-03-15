@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Log in</title>
+  <title><?php echo $title; ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="icon" href="<?php echo base_url(); ?>assets/dist/img/dilg-logo.png">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -86,7 +87,7 @@
       </form>
 
       <p class="mb-1">
-        <a href="#">I forgot my password</a>
+        <!-- <a href="#">I forgot my password</a> -->
       </p>
     </div>
     <!-- /.login-card-body -->
