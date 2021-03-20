@@ -150,7 +150,7 @@ legend{
                         <table class="my-3">
                             <tr>
                                 <td> <strong>POSITION:</strong> </td>
-                                <td><?php echo strtoupper($employee['firstname']." ".$employee['middlename']." ".$employee['lastname']); ?></td>
+                                <td><?php echo strtoupper($employee['position']); ?></td>
                             </tr>
                             <tr>
                                 <td><strong>EMPLOYEE TYPE:</strong></td>
@@ -189,6 +189,117 @@ legend{
                                 <td><?php echo "P".$employee['salary'] ;?></td>
                             </tr>
                         </table>
+
+                        <label class="cat-title all-caps"><span class="fa fa-briefcase"></span> WORK HISTORY</label>
+                        <?php
+                            if($employee['we_agency1'] != ""){
+                        ?>
+                            <table class="my-2">
+                                <tr>
+                                    <td> <strong>AGENCY:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_agency1']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td> <strong>POSITION:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_position1']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>FROM:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_from1']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TO:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_to1']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MONTHLY SALARY:</strong></td>
+                                    <td><?php echo "P".$employee['we_salary1'] ;?></td>
+                                </tr>
+                            </table>
+                        <?php
+                            }
+                            if($employee['we_agency2'] != ""){
+                        ?>
+                            <hr>
+                            <table class="my-2">
+                                <tr>
+                                    <td> <strong>AGENCY:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_agency2']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td> <strong>POSITION:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_position2']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>FROM:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_from2']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TO:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_to2']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MONTHLY SALARY:</strong></td>
+                                    <td><?php echo "P".$employee['we_salary2'] ;?></td>
+                                </tr>
+                            </table>
+                        <?php
+                            }
+                            if($employee['we_agency3'] != ""){
+                        ?>
+                            <hr>
+                            <table class="my-2">
+                                <tr>
+                                    <td> <strong>AGENCY:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_agency3']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td> <strong>POSITION:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_position3']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>FROM:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_from3']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TO:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_to3']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MONTHLY SALARY:</strong></td>
+                                    <td><?php echo "P".$employee['we_salary3'] ;?></td>
+                                </tr>
+                            </table>
+                        <?php
+                            }
+                            if($employee['we_agency4'] != ""){
+                        ?>
+                            <hr>
+                            <table class="my-2">
+                                <tr>
+                                    <td> <strong>AGENCY:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_agency4']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td> <strong>POSITION:</strong> </td>
+                                    <td><?php echo strtoupper($employee['we_position4']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>FROM:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_from4']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TO:</strong></td>
+                                    <td><?php $birthdate = date_create($employee['we_to4']); echo date_format($birthdate,"M d Y"); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MONTHLY SALARY:</strong></td>
+                                    <td><?php echo "P".$employee['we_salary4'] ;?></td>
+                                </tr>
+                            </table>
+                        <?php
+                            }
+                        ?>
                     </div>
 
                     

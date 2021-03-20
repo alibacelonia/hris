@@ -28,7 +28,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Sex</th>
+                    <th>Gender</th>
                     <th>Position Applied</th>
                     <th>Application Date</th>
                     <th>Status</th>
@@ -40,7 +40,7 @@
                     foreach($apps as $app){
                     ?>
                     <tr>
-                        <td><?php echo $app['name'];?></td>
+                        <td><a href="<?php echo base_url()."home/applicant_details/".base64_encode(base64_encode($app['id']));?>"><?php echo $app['name'];?></a></td>
                         <td><?php echo $app['sex'] == "F" ? "Female" : "Male";?></td>
                         <td><?php echo $app['position'];?></td>
                         <td><?php echo $app['application_date'];?></td>

@@ -17,6 +17,7 @@ class Home extends CI_Controller {
 		$session_data = $this->session->userdata('user');
 		if(isset($session_data)){
 			$data['user_details'] = $this->user->get_user_details(array("id"=>$session_data['id']));
+			$data['dashboard_count'] = $this->employee->get_dashboard_count();
 			// var_dump($data);
 			$this->load->view('templates/styles',$data);
 			$this->load->view('templates/header',$data);
@@ -208,6 +209,35 @@ class Home extends CI_Controller {
 		}
 
 	}
+	
+	public function applicant_details()
+	{
+		
+		$id = base64_decode(base64_decode($this->uri->segment(3)));
+		
+		$data['applicant'] = $this->employee->get_applicant_details(array("id"=>$id));
+
+		$data['id'] = $id;
+		$data["title"] = "Applicant Details";
+		$data["current_page"] = "applicants";
+		$session_data = $this->session->userdata('user');
+		if(isset($session_data)){
+			$data['user_details'] = $this->user->get_user_details(array("id"=>$session_data['id']));
+			// var_dump($data);
+			$this->load->view('templates/styles',$data);
+			$this->load->view('templates/header',$data);
+			$this->load->view('templates/topbar',$data);
+			$this->load->view('templates/sidebar',$data);
+			$this->load->view('admin/applicant_details',$data);
+			$this->load->view('templates/footer');
+			$this->load->view('templates/scripts');
+		}
+		else{
+			redirect(base_url());
+		}
+
+	}
+
 	public function save_changes()
 	{
 		$tempid = $this->input->post('id');
@@ -474,5 +504,68 @@ class Home extends CI_Controller {
 			redirect(base_url());
 		}
 
+	}
+
+	function upload_pds(){
+		
+        $session_data = $this->session->userdata('user');
+		
+		$config['upload_path'] = "./files/pds";
+		$config['allowed_types'] = 'jpg|png|doc|docx|xlsx|xls|pdf';
+		$config['encrypt_name'] = false;
+		$config['overwrite'] = true;
+        $this->load->library('upload',$config);
+		$path = "./files/pds/". str_replace(' ','_',$_FILES["pds"]["name"]);
+		$uid = $this->input->post('uid');
+
+		if($this->upload->do_upload("pds")){
+			$file = array("upload_data" => $this->upload->data());
+			$data = array("pds_path" => $path);
+
+			if($this->employee->save_applicant_changes(base64_decode(base64_decode($uid)),1,$data)){
+				header('location:'.base_url()."home/edit_applicant/".$uid);
+				$this->session->set_flashdata('message','Successfully Updated.');
+			}
+			else{
+				header('location:'.base_url()."home/edit_applicant/".$uid);
+				$this->session->set_flashdata('error','Error updating.');
+			}
+		}
+		else{
+			header('location:'.base_url()."home/edit_applicant/".$uid);
+			$this->session->set_flashdata('error','Error uploading PDS.');
+		}
+	}
+
+
+	function upload_saln(){
+		
+        $session_data = $this->session->userdata('user');
+		
+		$config['upload_path'] = "./files/saln";
+		$config['allowed_types'] = 'jpg|png|doc|docx|xlsx|xls|pdf';
+		$config['encrypt_name'] = false;
+		$config['overwrite'] = true;
+        $this->load->library('upload',$config);
+		$path = "./files/saln/". str_replace(' ','_',$_FILES["saln"]["name"]);
+		$uid = $this->input->post('uid');
+		
+		if($this->upload->do_upload("saln")){
+			$file = array("upload_data" => $this->upload->data());
+			$data = array("saln_path" => $path);
+
+			if($this->employee->save_applicant_changes(base64_decode(base64_decode($uid)),1,$data)){
+				header('location:'.base_url()."home/edit_applicant/".$uid);
+				$this->session->set_flashdata('message','Successfully Updated.');
+			}
+			else{
+				header('location:'.base_url()."home/edit_applicant/".$uid);
+				$this->session->set_flashdata('error','Error updating.');
+			}
+		}
+		else{
+			header('location:'.base_url()."home/edit_applicant/".$uid);
+			$this->session->set_flashdata('error','Error uploading SALN.');
+		}
 	}
 }

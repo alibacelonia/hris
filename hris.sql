@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2021 at 11:55 PM
+-- Generation Time: Mar 20, 2021 at 01:39 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.27
 
@@ -40,20 +40,23 @@ CREATE TABLE `applicants` (
   `position` varchar(100) DEFAULT NULL,
   `application_date` date DEFAULT NULL,
   `status` varchar(10) DEFAULT NULL,
-  `date_updated` datetime DEFAULT NULL
+  `date_updated` datetime DEFAULT NULL,
+  `saln_path` varchar(200) DEFAULT NULL,
+  `pds_path` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Truncate table before insert `applicants`
---
-
-TRUNCATE TABLE `applicants`;
 --
 -- Dumping data for table `applicants`
 --
 
-INSERT INTO `applicants` (`id`, `firstname`, `middlename`, `lastname`, `birthdate`, `sex`, `position`, `application_date`, `status`, `date_updated`) VALUES
-(1, '1', '1', '1', '2021-04-10', 'F', '1', '2021-03-12', 'H', NULL);
+INSERT INTO `applicants` (`id`, `firstname`, `middlename`, `lastname`, `birthdate`, `sex`, `position`, `application_date`, `status`, `date_updated`, `saln_path`, `pds_path`) VALUES
+(1, 'John Paul', 'Malinao', 'Maglaya', '2021-04-10', 'M', 'Admin Officer II', '2021-03-12', 'H', '2021-03-19 04:06:00', NULL, NULL),
+(3, 'Jose Victorio', 'Bautista', 'Abengona', '2021-03-20', 'M', 'Computer Programmer I', '2021-03-20', 'P', '2021-03-20 12:45:00', NULL, NULL),
+(4, 'Johnley', 'Bautista', 'Estigoy', '1998-07-20', 'M', 'Computer Programmer I', '2021-03-20', 'P', '2021-03-20 12:46:00', NULL, NULL),
+(5, 'Jericho', 'Bautista', 'De Castro', '1998-06-01', 'M', 'Computer Programmer I', '2021-03-20', 'P', '2021-03-20 12:47:00', NULL, NULL),
+(6, 'Jeremy', 'Parrocha', 'Dulay', '1998-06-29', 'M', 'Admin Officer I', '2021-03-20', 'P', '2021-03-20 12:48:00', NULL, NULL),
+(7, 'Bryan', 'Bautista', 'Baoas', '1998-12-15', 'M', 'Admin Officer I', '2021-01-22', 'R', '2021-03-20 12:51:00', NULL, NULL),
+(8, 'Kenneth', 'Bautista', 'Corpuz', '1998-06-26', 'M', 'Computer Programmer I', '2021-03-11', 'R', '2021-03-20 12:52:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -109,20 +112,17 @@ CREATE TABLE `employees` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `employees`
---
-
-TRUNCATE TABLE `employees`;
---
 -- Dumping data for table `employees`
 --
 
 INSERT INTO `employees` (`id`, `firstname`, `middlename`, `lastname`, `sex`, `birthdate`, `position`, `date_hired`, `employee_type`, `status`, `leave_credits`, `date_updated`, `salary`, `elem_school`, `elem_from`, `elem_to`, `hs_school`, `hs_from`, `hs_to`, `college_school`, `college_course`, `college_from`, `college_to`, `we_agency1`, `we_position1`, `we_from1`, `we_to1`, `we_salary1`, `we_agency2`, `we_agency3`, `we_agency4`, `we_position2`, `we_position3`, `we_position4`, `we_from2`, `we_from3`, `we_from4`, `we_to2`, `we_to3`, `we_to4`, `we_salary2`, `we_salary3`, `we_salary4`) VALUES
 (1, 'Femie', 'Ditchella', 'Marquez', 'F', '1999-04-19', 'Verifier', '2020-10-05', 'COS', 'A', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 'asddas', 'asd', 'asd', 'M', '2021-03-12', 'asdasd', '2021-03-12', 'REGULAR', 'A', 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'asdasd', 'asdasda', 'asdasd', 'M', '2021-03-16', 'asdasd', '2021-03-12', 'COS', 'RT', 212, '2021-03-15 07:39:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 'Mohammed Ali', 'Bacelonia', 'Abdullah', 'M', '2021-03-16', 'Admin Officer II', '2021-03-16', 'COS', 'A', 0, '2021-03-15 09:36:00', '30000', 'Sta. Teresa Elementary School', '2004', '2010', 'Sta. Teresa National High School', '2010', '2014', 'Don Mariano Marcos Memorial State University', 'BS in Information Technology', '2014', '2018', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(6, 'asdasdasd', 'asdasda', 'asdasd', 'M', '2021-03-25', 'asd', '2021-03-19', 'JO', 'A', 11, '2021-03-15 09:12:00', '121', '', '', '', '', '', '', '', '', '', '', 'Ulpi', 'asd', '2021-03-11', '2021-03-26', '123123123', 'dasdas', 'asdasd', 'asdada', 'asdasdasd', 'asdasdasd', 'asdasd', '2021-03-16', '2021-04-02', '2021-03-17', '2021-03-25', '2021-03-26', '2021-03-25', '123', '123123', '123123');
+(5, 'Mohammed Ali', 'Bacelonia', 'Abdullah', 'M', '2021-03-16', 'Admin Officer II', '2021-03-16', 'COS', 'A', 0, '2021-03-16 03:53:00', '30000', 'Sta. Teresa Elementary School', '2004', '2010', 'Sta. Teresa National High School', '2010', '2014', 'Don Mariano Marcos Memorial State University', 'BS in Information Technology', '2014', '2018', 'Universal Leaf Philippines Incorporated', 'BAS Developer I', '2018-07-02', '2019-12-10', '17564', 'Department of Agriculture', '', '', 'Project Assistant I', '', '', '2020-07-02', '', '', '2021-03-15', '', '', '16758', '', ''),
+(7, 'Andrea', 'Bautista', 'Franco', 'F', '1996-01-18', 'Admin Officer II', '2021-03-16', 'COS', 'A', 0, '2021-03-20 01:02:00', '30000', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(8, 'James', 'Bautista', 'Flores', 'M', '1981-01-20', 'Information Analyst II', '2018-01-17', 'REGULAR', 'A', 15, '2021-03-20 01:04:00', '32000', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(9, 'Roel', 'Bautista', 'Goldara', 'M', '1980-10-23', 'Computer Maintenance Technologist II', '2019-10-07', 'REGULAR', 'A', 15, '2021-03-20 01:06:00', '32000', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(10, 'Deo', 'Bautista', 'Rivera', 'M', '1973-10-18', 'Admin Officer V', '2017-10-11', 'REGULAR', 'A', 15, '2021-03-20 01:07:00', '42000', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(11, 'Roosevelt', 'Bautista', 'Peralta', 'M', '1957-02-20', 'Chief, RAED', '2008-06-20', 'REGULAR', 'A', 15, '2021-03-20 01:08:00', '62000', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -148,11 +148,6 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Truncate table before insert `users`
---
-
-TRUNCATE TABLE `users`;
 --
 -- Dumping data for table `users`
 --
@@ -190,13 +185,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `applicants`
 --
 ALTER TABLE `applicants`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`

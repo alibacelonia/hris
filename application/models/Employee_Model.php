@@ -6,6 +6,16 @@ class Employee_Model extends CI_Model{
 		$this->load->database();
 	}
 
+	public function get_dashboard_count()
+    {
+		
+		$query = $this->db->select("(SELECT COUNT(id) FROM applicants WHERE MONTH(NOW()) = MONTH(application_date)) AS new_applicants, (SELECT COUNT(id) FROM employees WHERE MONTH(NOW()) = MONTH(date_hired)) AS new_employees, (SELECT COUNT(id) FROM applicants) AS applicants, (SELECT COUNT(id) FROM employees) AS employees")
+				->get();
+		
+		$result = $query->result_array();
+		return $result;
+	}
+
 	public function get_employees()
     {
 		
@@ -19,7 +29,7 @@ class Employee_Model extends CI_Model{
 	public function get_applicants()
     {
 		
-		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate, position, application_date,status,date_updated")
+		$query = $this->db->select("id,CONCAT(firstname,' ', SUBSTR(middlename,1,1),'. ', lastname) AS name, sex, birthdate, position, application_date,status,date_updated,saln_path,pds_path")
 				->get('applicants');
 		
 		$result = $query->result_array();
