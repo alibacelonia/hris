@@ -14,4 +14,4 @@
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-<link href="<?php echo base_url(); ?>assets/dist/css/fontstyles.css" rel="stylesheet">
+<link href="<?php echo base_url(); ?>assets/dist/css/fontstyle.css" rel="stylesheet">
