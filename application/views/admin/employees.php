@@ -27,6 +27,7 @@
                 <table id="employees" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>No.</th>
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Position</th>
@@ -37,7 +38,7 @@
                     <th>Action</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <!-- <tbody>
                     <?php
                     foreach($emps as $emp){
                         $current_date = date_create($emp['date_updated']);
@@ -70,24 +71,26 @@
                         </td>
                         <td>
                         <a href="<?php echo base_url().'home/edit_employee/'.(base64_encode(base64_encode($emp['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-flat btn-success btn-sm"><i class="fa fa-edit"></i></a>
-                        <!-- <a href="<?php echo base_url().'home/edit_employee/'.(base64_encode(base64_encode($emp['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Archive" class="btn btn-flat btn-danger btn-sm"><i class="fa fa-file-archive"></i></a> -->
+                        <a href="<?php echo base_url().'home/edit_employee/'.(base64_encode(base64_encode($emp['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Archive" class="btn btn-flat btn-danger btn-sm"><i class="fa fa-file-archive"></i></a>
                         </td>
                     </tr>
                     <?php
                     }
                     ?>
-                  </tbody>
-                  <!-- <tfoot>
-                  <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Employee Type</th>
-                    <th>Leave Credits</th>
-                    <th>Date Hired</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                  </tfoot> -->
+                  </tbody> -->
+                  <tfoot>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Position</th>
+                        <th>Employee Type</th>
+                        <th>Leave Credits</th>
+                        <th>Date Hired / Appointed</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
                 </div>

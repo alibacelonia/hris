@@ -24,9 +24,10 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                 <div class=" table-responsive">
-                <table id="employees" class="table table-bordered table-hover">
+                <table id="applicants" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>No.</th>
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Position Applied</th>
@@ -35,7 +36,7 @@
                     <th>Action</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <!-- <tbody>
                     <?php
                     foreach($apps as $app){
                     ?>
@@ -55,24 +56,24 @@
                         </td>
                         <td>
                         <a href="<?php echo base_url().'home/edit_applicant/'.(base64_encode(base64_encode($app['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-flat btn-success btn-sm"><i class="fa fa-edit"></i></a>
-                        <!-- <a href="<?php echo base_url().'home/edit_employee/'.(base64_encode(base64_encode($app['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Archive" class="btn btn-flat btn-danger btn-sm"><i class="fa fa-file-archive"></i></a> -->
+                        <a href="<?php echo base_url().'home/edit_employee/'.(base64_encode(base64_encode($app['id']))); ?>" data-toggle="tooltip" data-placement="top" title="Archive" class="btn btn-flat btn-danger btn-sm"><i class="fa fa-file-archive"></i></a>
                         </td>
                     </tr>
                     <?php
                     }
                     ?>
-                  </tbody>
-                  <!-- <tfoot>
+                  </tbody> -->
+                  <tfoot>
                   <tr>
+                    <th>No.</th>
                     <th>Name</th>
-                    <th>Position</th>
-                    <th>Employee Type</th>
-                    <th>Leave Credits</th>
-                    <th>Date Hired</th>
+                    <th>Gender</th>
+                    <th>Position Applied</th>
+                    <th>Application Date</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
-                  </tfoot> -->
+                  </tfoot>
                 </table>
               </div>
                 </div>

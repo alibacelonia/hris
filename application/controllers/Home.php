@@ -32,6 +32,83 @@ class Home extends CI_Controller {
 		}
 
 	}
+
+	function getApplicantLists(){
+        $data = $row = array();
+        
+        // Fetch member's records
+        $appData = $this->applicant->getRows($_POST);
+        
+        $i = $_POST['start'];
+        foreach($appData as $applicant){
+			$i++;
+			$edit = '<a href="'.base_url().'home/edit_applicant/'.(base64_encode(base64_encode($applicant->id))).'" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-flat btn-success btn-sm"><i class="fa fa-edit"></i></a>';
+			if($applicant->status == "H"){  $type = "success"; $text = "HIRED"; }
+			else if($applicant->status == "P"){  $type = "warning"; $text = "PENDING"; }
+			else if($applicant->status == "R"){  $type = "danger"; $text = "REJECTED"; }
+			$badge = "<span class='right badge badge-".$type."'>".$text."</span>";
+
+			$name = "<a href=".base_url()."home/applicant_details/".base64_encode(base64_encode($applicant->id)).">".$applicant->firstname . " ". $applicant->lastname."</a>";
+			
+            $status = ($applicant->status == "P")?'PENDING':'HIRE';
+            $sex = ($applicant->sex == "M")?'Male':'Female';
+            $data[] = array($i, $name, $sex, $applicant->position, $applicant->application_date, $badge,$edit);
+        }
+        
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->applicant->countAll(),
+            "recordsFiltered" => $this->applicant->countFiltered($_POST),
+            "data" => $data,
+        );
+        
+        // Output to JSON format
+        echo json_encode($output);
+    }
+
+
+	function getEmployeeLists(){
+        $data = $row = array();
+        
+        // Fetch member's records
+        $appData = $this->employee->getRows($_POST);
+        
+        $i = $_POST['start'];
+        foreach($appData as $employee){
+			$create_date_updated = date_create($employee->date_updated);
+			$date_updated = date_format($create_date_updated,"M d, Y");
+			$i++;
+			$edit = '<a href="'.base_url().'home/edit_employee/'.(base64_encode(base64_encode($employee->id))).'" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-flat btn-success btn-sm"><i class="fa fa-edit"></i></a>';
+			if($employee->status == "A"){  $type = "success"; $text = "ACTIVE"; }
+			else if($employee->status == "RT"){  $type = "danger"; $text = "RETIRED"; }
+			else if($employee->status == "RS"){  $type = "danger"; $text = "RESIGNED"; }
+			else if($employee->status == "ENDO"){  $type = "danger"; $text = "END OF CONTRACT"; }
+			$status = "<span class='right badge badge-".$type."'>".$text."</span>";
+
+			if($employee->employee_type == "COS"){  $type = "warning"; $text = "Contract of Service"; }
+			else if($employee->employee_type == "JO"){  $type = "warning"; $text = "Job Order"; }
+			else if($employee->employee_type == "CASUAL"){  $type = "info"; $text = "Casual"; }
+			else if($employee->employee_type == "REGULAR"){  $type = "primary"; $text = "Regular"; }
+			$employee_type = "<span class='right badge badge-".$type."'>".$text."</span>";
+
+			$name = "<a href=".base_url()."home/employee_details/".base64_encode(base64_encode($employee->id)).">".$employee->firstname . " ". $employee->lastname."</a>";
+			
+            $sex = ($employee->sex == "M")?'Male':'Female';
+			$leave_credits = $employee->leave_credits." as of ".$date_updated;
+            $data[] = array($i, $name, $sex, $employee->position,$employee_type,$leave_credits, $employee->date_hired, $status,$edit);
+        }
+        
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->employee->countAll(),
+            "recordsFiltered" => $this->employee->countFiltered($_POST),
+            "data" => $data,
+        );
+        
+        // Output to JSON format
+        echo json_encode($output);
+    }
+
 	public function applicants()
 	{
 		
@@ -184,28 +261,33 @@ class Home extends CI_Controller {
 	}
 	public function edit_applicant()
 	{
-		
-		$id = base64_decode(base64_decode($this->uri->segment(3)));
-		
-		$data['applicant'] = $this->employee->get_applicant_details(array("id"=>$id));
+		if($this->uri->segment(3)){
+			
+			$id = base64_decode(base64_decode($this->uri->segment(3)));
+			
+			$data['applicant'] = $this->employee->get_applicant_details(array("id"=>$id));
 
-		$data['id'] = $id;
-		$data["title"] = "Edit Applicant";
-		$data["current_page"] = "applicants";
-		$session_data = $this->session->userdata('user');
-		if(isset($session_data)){
-			$data['user_details'] = $this->user->get_user_details(array("id"=>$session_data['id']));
-			// var_dump($data);
-			$this->load->view('templates/styles',$data);
-			$this->load->view('templates/header',$data);
-			$this->load->view('templates/topbar',$data);
-			$this->load->view('templates/sidebar',$data);
-			$this->load->view('admin/edit_applicant',$data);
-			$this->load->view('templates/footer');
-			$this->load->view('templates/scripts');
+			$data['id'] = $id;
+			$data["title"] = "Edit Applicant";
+			$data["current_page"] = "applicants";
+			$session_data = $this->session->userdata('user');
+			if(isset($session_data)){
+				$data['user_details'] = $this->user->get_user_details(array("id"=>$session_data['id']));
+				// var_dump($data);
+				$this->load->view('templates/styles',$data);
+				$this->load->view('templates/header',$data);
+				$this->load->view('templates/topbar',$data);
+				$this->load->view('templates/sidebar',$data);
+				$this->load->view('admin/edit_applicant',$data);
+				$this->load->view('templates/footer');
+				$this->load->view('templates/scripts');
+			}
+			else{
+				redirect(base_url());
+			}
 		}
 		else{
-			redirect(base_url());
+			redirect(base_url('home/applicants'));
 		}
 
 	}
@@ -271,7 +353,7 @@ class Home extends CI_Controller {
         $status = $this->input->post('status');
 		$leave_credits = $this->input->post('leave_credits');
 		$salary = $this->input->post('salary');
-
+		$remarks = $this->input->post('remarks');
 		
 		//work history
         $we_agency1 = $this->input->post('we_agency1');
@@ -327,6 +409,7 @@ class Home extends CI_Controller {
 					'leave_credits' => $leave_credits,
 					'salary' => $salary,
 					'date_updated' => $current_date,
+					'remarks' => $remarks,
 
 					'we_agency1' => $we_agency1,
 					'we_position1' => $we_position1,
@@ -373,32 +456,78 @@ class Home extends CI_Controller {
 		$birthdate = $this->input->post('birthdate');
 		
         $position = $this->input->post('position');
+        $position_type = $this->input->post('position_type');
         $application_date = $this->input->post('application_date');
-        $status = $this->input->post('status');
+        $status = $flag == 1 ? $this->input->post('status') : "P";
+
+		
+		$remarks = $this->input->post('remarks');
 		
 		$format = "%Y-%m-%d %h:%i %A";
 		$current_date = mdate($format);
 
 		$data = array(
-					'firstname' => $firstname,
-					'middlename' => $middlename,
-					'lastname' => $lastname,
-					'sex' => $sex,
-					'birthdate' => $birthdate,
-					'position' => $position,
-					'application_date' => $application_date,
-					'status' => $status,
-					'date_updated' => $current_date
-				);
-
+			'firstname' => $firstname,
+			'middlename' => $middlename,
+			'lastname' => $lastname,
+			'sex' => $sex,
+			'birthdate' => $birthdate,
+			'position' => $position,
+			'position_type' => $position_type,
+			'application_date' => $application_date,
+			'status' => $status,
+			'date_updated' => $current_date,
+			'remarks' => $remarks
+		);
+		if($status == ""){unset($data['status']);}
 		$this->employee->save_applicant_changes($id,$flag, $data);
-		if($flag){
-			header('location:'.base_url()."home/edit_applicant/".$tempid);
-			$this->session->set_flashdata('message','Applicant record is successfully updated.');
+
+		$awards = array();
+		for($i = 1; $i <= $this->input->post('award_counter'); $i++){
+			$name = htmlspecialchars($this->input->post('award_name'.$i));
+			$description = htmlspecialchars($this->input->post('award_description'.$i));
+			$date = htmlspecialchars($this->input->post('award_date'.$i));
+			if($name != "" & $description != "" && $date != ""){
+				$award = array(
+					"name" => $name,
+					"description"  => $description,
+					"date"  => $date,
+					"uid"  => $id,
+				);
+				$awards[] = $award;
+				
+			}
+		}
+		$this->employee->save_applicant_awards($id,$flag, $awards);
+
+		if($status == "H"){
+			$data = array(
+				'firstname' => $firstname,
+				'middlename' => $middlename,
+				'lastname' => $lastname,
+				'sex' => $sex,
+				'birthdate' => $birthdate,
+				'position' => $position,
+				'employee_type' => $position_type,
+				'leave_credits' => 0,
+				'date_hired' => $current_date,
+				'status' => "A",
+				'date_updated' => $current_date
+			);
+			if($this->employee->save_employee_changes($id,0, $data)){
+				header('location:'.base_url()."home/edit_employee/".base64_encode(base64_encode($this->db->insert_id())));
+				$this->session->set_flashdata('message','Applicant successfully hired.');
+			}
 		}
 		else{
-			header('location:'.base_url()."home/add_applicant/".$tempid);
-			$this->session->set_flashdata('message','Applicant record is successfully created.');
+			if($flag){
+				header('location:'.base_url()."home/edit_applicant/".$tempid);
+				$this->session->set_flashdata('message','Applicant record is successfully updated.');
+			}
+			else{
+				header('location:'.base_url()."home/add_applicant/".$tempid);
+				$this->session->set_flashdata('message','Applicant record is successfully created.');
+			}
 		}
 	}
 
@@ -512,15 +641,14 @@ class Home extends CI_Controller {
 		
 		$config['upload_path'] = "./files/pds";
 		$config['allowed_types'] = 'jpg|png|doc|docx|xlsx|xls|pdf';
-		$config['encrypt_name'] = false;
+		$config['encrypt_name'] = true;
 		$config['overwrite'] = true;
         $this->load->library('upload',$config);
-		$path = "./files/pds/". str_replace(' ','_',$_FILES["pds"]["name"]);
 		$uid = $this->input->post('uid');
 
 		if($this->upload->do_upload("pds")){
 			$file = array("upload_data" => $this->upload->data());
-			$data = array("pds_path" => $path);
+			$data = array("pds_path" => "./files/pds/".$file["upload_data"]["file_name"]);
 
 			if($this->employee->save_applicant_changes(base64_decode(base64_decode($uid)),1,$data)){
 				header('location:'.base_url()."home/edit_applicant/".$uid);

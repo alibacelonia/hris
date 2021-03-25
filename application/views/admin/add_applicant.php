@@ -92,6 +92,19 @@
                             <input type="hidden" class="form-control" placeholder="" name="id" required value="">
                         </div>
                     </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Position Type<sup class="text-danger">*</sup></label>
+                            <select class="form-control" name="position_type" required>
+                                <option selected disabled></option>
+                                <option value="COS">Contract of Service</option>
+                                <option value="JO">Job Order</option>
+                                <option value="CASUAL">Casual</option>
+                                <option value="REGULAR">Regular</option>
+                            </select>
+                        </div>
+                    </div>
                     
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -99,7 +112,7 @@
                             <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="application_date" required value="">
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <!-- <div class="col-sm-6">
                         <div class="form-group">
                             <label>Status <sup class="text-danger">*</sup></label>
                             <select class="form-control" name="status" required>
@@ -109,6 +122,8 @@
                                 <option value="R">Reject</option>
                             </select>
                         </div>
+                    </div> -->
+                    <div class="col-sm-12">
                         
                         <a href="<?php echo base_url(); ?>home/applicants" class="btn btn-outline-danger">Cancel</a>
                         <button type="submit" class="btn btn-flat btn-success">Save Changes</button>

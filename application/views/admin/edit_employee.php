@@ -239,6 +239,14 @@ legend{
                             <input type="number" class="form-control" placeholder="" name="salary" required value="<?php echo $employee['salary']; ?>">
                         </div>
                     </div>
+
+                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Remarks <sup class="text-danger">*</sup></label>
+                            <input class="form-control" placeholder="" name="remarks" required value="<?php echo $employee['remarks']; ?>">
+                        </div>
+                    </div>
                     
                     
                     

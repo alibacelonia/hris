@@ -113,6 +113,20 @@
                         </div>
                     </div>
                     
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Position Type<sup class="text-danger">*</sup></label>
+                            <select class="form-control" name="position_type" required>
+                                <option selected disabled></option>
+                                <option value="COS" <?php echo $applicant['position_type'] == "COS" ? "selected" : ""; ?>>Contract of Service</option>
+                                <option value="JO" <?php echo $applicant['position_type'] == "JO" ? "selected" : ""; ?>>Job Order</option>
+                                <option value="CASUAL" <?php echo $applicant['position_type'] == "CASUAL" ? "selected" : ""; ?>>Casual</option>
+                                <option value="REGULAR" <?php echo $applicant['position_type'] == "REGULAR" ? "selected" : ""; ?>>Regular</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Date of Application <sup class="text-danger">*</sup></label>
@@ -122,19 +136,39 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Status <sup class="text-danger">*</sup></label>
-                            <select class="form-control" name="status" required>
+                            <select class="form-control" name="status"  <?php echo $applicant['status'] == "P" ? "required" : "disabled"; ?>>
                                 <option selected disabled></option>
-                                <option value="P" <?php echo $applicant['status'] == "P" ? "selected" : ""; ?>>Pending</option>
+                                <option value="P" <?php echo $applicant['status'] == "P" ? "selected" : ""; ?> disabled>Pending</option>
                                 <option value="H" <?php echo $applicant['status'] == "H" ? "selected" : ""; ?>>Hire</option>
                                 <option value="R" <?php echo $applicant['status'] == "R" ? "selected" : ""; ?>>Reject</option>
                                 <!-- <option value="AWOL" <?php echo $applicant['status'] == "AWOL" ? "selected" : ""; ?>>Absent without leave</option> -->
                             </select>
                         </div>
                     </div>
+                    
 
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Remarks <sup class="text-danger">*</sup></label>
+                            <input class="form-control" placeholder="" name="remarks" required value="<?php echo $applicant['remarks']; ?>">
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-12">
+                        <label class="cat-title all-caps">AWARDS & ACHIEVEMENTS</label><br>
+                    </div>
+                    
+                    <div class="col-sm-12 mb-3">
+                        <button type="button" class="btn btn-flat btn-primary btn-sm btn-add-award">Add Award</button>
+                    </div>
+
+                    <div class="col-sm-12" id="list_of_awards">
+                        <input type="hidden" name="award_counter" id="award_counter" value="0">
+                        
+                    </div>
 
                     <div class="col-sm-12">
-                        <a href="<?php echo base_url(); ?>home/employees" class="btn btn-outline-danger">Cancel</a>
+                        <a href="<?php echo base_url(); ?>home/applicants" class="btn btn-outline-danger">Cancel</a>
                         <button type="submit" class="btn btn-flat btn-success">Save Changes</button>
                     </div>
                 </div>
@@ -144,8 +178,8 @@
                 <div class="col-sm-6 mb-4">
                     <div class="form-group pds-change-section">
                         <label>Personal Data Sheet (PDS) <sup class="text-danger">*</sup></label><br/>
-                        <a href="<?php echo base_url().$applicant['pds_path']; ?>" class="btn btn-flat btn-info" target="_blank"> View PDS</a>
-                        <button type="submit" class="btn btn-flat btn-success btn-change-pds">Upload PDS</button>
+                        <button class="btn btn-flat btn-info btn-view-pds" onclick="viewPDS('<?php echo $applicant['pds_path']; ?>','<?php echo base_url().$applicant['pds_path']; ?>');"> View PDS</a>
+                        <button class="btn btn-flat btn-success btn-change-pds">Upload PDS</button>
                     </div>
                     <form method="post" action="<?php echo base_url(); ?>home/upload_pds" enctype="multipart/form-data" class="form-for-pds" style="display:none;">
                         <div class="form-group">
@@ -161,7 +195,7 @@
                         <button type="submit" class="btn btn-flat btn-success btn-for-pds" disabled>Upload File</button>
                     </form>
                 </div>
-                <div class="col-sm-6 mb-4">
+                <!-- <div class="col-sm-6 mb-4">
                 
                     <div class="form-group saln-change-section">
                         <label>Statement of Assets, Liabilities and Net Worth (SALN) <sup class="text-danger">*</sup></label><br/>
@@ -182,7 +216,7 @@
                         <span class="btn btn-flat btn-danger btn-cancel-saln">Cancel</span>
                         <button type="submit" class="btn btn-flat btn-success btn-for-saln" disabled>Upload File</button>
                     </form>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
