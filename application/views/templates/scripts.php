@@ -77,7 +77,7 @@ $(function () {
     });
 
     $("#pds").change(function(){
-      if(parseInt(this.files[0].size / 100000) > 10){
+      if(parseInt(this.files[0].size / 1000000) > 10){
         this.value = "";
         $(this).siblings('.custom-file-label').text("Choose file");
         alert("Maximum file size is 10 MB.");
@@ -112,6 +112,7 @@ $(function () {
       var award_counter = parseInt($("#award_counter").val()) + 1;
       $("#award_counter").val(award_counter);
       var award =  '<div class="row">'+
+          '<input type="hidden" id="award_id'+award_counter+'" name="award_id'+award_counter+'">'+
           '<div class="col-sm-3">'+
               '<div class="form-group">'+
                   '<label>Name <sup class="text-danger"></sup></label>'+
@@ -133,11 +134,11 @@ $(function () {
           '<div class="col-sm-1">'+
               '<div class="form-group">'+
               '<label style="visibility:hidden;">Remove</label>'+
-              '<button type="button" class="btn btn-flat btn-danger" onclick="removeAward(this)">Remove</button>'+
+              '<button type="button" class="btn btn-flat btn-danger" onclick="removeAward(this,'+award_counter+')">Remove</button>'+
               '</div>'+
           '</div>'+
       '</div>';
-
+      $(".no_awards").remove();
       $("#list_of_awards").append(award);
     });
 
@@ -149,15 +150,42 @@ $(function () {
       window.open(url,'_blank');
     }
     else{
-      
       alert("PDS not found. Please upload one.");
     }
   }
 
-  function removeAward(e){
-    $(e).closest('.row').remove();
-    var award_counter = parseInt($("#award_counter").val()) - 1;
-    $("#award_counter").val(award_counter);
+  function viewSALN(saln, url){
+    if(saln){
+      window.open(url,'_blank');
+    }
+    else{
+      alert("SALN not found. Please upload one.");
+    }
+  }
+
+  function removeAward(e,i){
+    var r = confirm("Are you sure you want to remove this award?");
+    if (r == true) {
+      $.ajax({
+        type: "POST",
+        url: "<?php echo base_url().'home/remove_award';?>",
+        data: {
+          "id": $("#award_id"+i).val()
+        },
+        success: function(response) {
+          $(e).closest('.row').remove();
+          var award_counter = parseInt($("#award_counter").val()) - 1;
+          $("#award_counter").val(award_counter);
+          if(award_counter == 0){
+            $("#list_of_awards").append("<span class='no_awards'>No Awards & Achievements Yet.</span>");
+          }
+        },
+        error: function(response) {
+            alert("Error removing award.");
+        }
+      });
+    }
+
   }
 </script>
 </body>

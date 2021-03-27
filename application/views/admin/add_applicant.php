@@ -123,6 +123,21 @@
                             </select>
                         </div>
                     </div> -->
+
+                    
+                    <div class="col-sm-12">
+                        <label class="cat-title all-caps">AWARDS & ACHIEVEMENTS</label><br>
+                    </div>
+                    
+                    <div class="col-sm-12 mb-3">
+                        <button type="button" class="btn btn-flat btn-primary btn-sm btn-add-award">Add Award</button>
+                    </div>
+
+                    <div class="col-sm-12" id="list_of_awards">
+                        <input type="hidden" name="award_counter" id="award_counter" value="0">
+                        
+                    </div>
+
                     <div class="col-sm-12">
                         
                         <a href="<?php echo base_url(); ?>home/applicants" class="btn btn-outline-danger">Cancel</a>

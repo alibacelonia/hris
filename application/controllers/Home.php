@@ -432,7 +432,28 @@ class Home extends CI_Controller {
 					'we_to4' => $we_to4,
 					'we_salary4' => $we_salary4
 				);
-		$this->employee->save_employee_changes($id,$flag, $data);
+		$last_id = $this->employee->save_employee_changes($id,$flag, $data);
+		
+		$awards = array();
+		for($i = 1; $i <= $this->input->post('award_counter'); $i++){
+			$award_id = htmlspecialchars($this->input->post('award_id'.$i));
+			$award_name = htmlspecialchars($this->input->post('award_name'.$i));
+			$award_description = htmlspecialchars($this->input->post('award_description'.$i));
+			$award_date = htmlspecialchars($this->input->post('award_date'.$i));
+			if($award_name != "" & $award_description != "" && $award_date != ""){
+				$award = array(
+					"id" => $award_id,
+					"name" => $award_name,
+					"description"  => $award_description,
+					"date"  => $award_date,
+					"uid"  => $flag == 0 ? $last_id : $id,
+				);
+				$awards[] = $award;
+				
+			}
+		}
+		$this->employee->save_awards($id,$flag, $awards);
+
 		if($flag){
 			header('location:'.base_url()."home/edit_employee/".$tempid);
 			$this->session->set_flashdata('message','Employee record is successfully updated.');
@@ -480,25 +501,27 @@ class Home extends CI_Controller {
 			'remarks' => $remarks
 		);
 		if($status == ""){unset($data['status']);}
-		$this->employee->save_applicant_changes($id,$flag, $data);
+		$last_id = $this->employee->save_applicant_changes($id,$flag, $data);
 
 		$awards = array();
 		for($i = 1; $i <= $this->input->post('award_counter'); $i++){
-			$name = htmlspecialchars($this->input->post('award_name'.$i));
-			$description = htmlspecialchars($this->input->post('award_description'.$i));
-			$date = htmlspecialchars($this->input->post('award_date'.$i));
-			if($name != "" & $description != "" && $date != ""){
+			$award_id = htmlspecialchars($this->input->post('award_id'.$i));
+			$award_name = htmlspecialchars($this->input->post('award_name'.$i));
+			$award_description = htmlspecialchars($this->input->post('award_description'.$i));
+			$award_date = htmlspecialchars($this->input->post('award_date'.$i));
+			if($award_name != "" & $award_description != "" && $award_date != ""){
 				$award = array(
-					"name" => $name,
-					"description"  => $description,
-					"date"  => $date,
-					"uid"  => $id,
+					"id" => $award_id,
+					"name" => $award_name,
+					"description"  => $award_description,
+					"date"  => $award_date,
+					"uid"  =>  $flag == 0 ? $last_id : $id,
 				);
 				$awards[] = $award;
 				
 			}
 		}
-		$this->employee->save_applicant_awards($id,$flag, $awards);
+		$this->employee->save_awards($id,$flag, $awards);
 
 		if($status == "H"){
 			$data = array(
@@ -529,6 +552,12 @@ class Home extends CI_Controller {
 				$this->session->set_flashdata('message','Applicant record is successfully created.');
 			}
 		}
+	}
+
+	public function remove_award(){
+		$id = $this->input->post('id');
+		$result = $this->employee->remove_award($id);
+		return result;
 	}
 
 	public function save_account_info()
@@ -665,6 +694,35 @@ class Home extends CI_Controller {
 		}
 	}
 
+	function upload_employee_pds(){
+		
+        $session_data = $this->session->userdata('user');
+		
+		$config['upload_path'] = "./files/pds";
+		$config['allowed_types'] = 'jpg|png|doc|docx|xlsx|xls|pdf';
+		$config['encrypt_name'] = true;
+		$config['overwrite'] = true;
+        $this->load->library('upload',$config);
+		$uid = $this->input->post('uid');
+
+		if($this->upload->do_upload("pds")){
+			$file = array("upload_data" => $this->upload->data());
+			$data = array("pds_path" => "./files/pds/".$file["upload_data"]["file_name"]);
+
+			if($this->employee->save_employee_changes(base64_decode(base64_decode($uid)),1,$data)){
+				header('location:'.base_url()."home/edit_employee/".$uid);
+				$this->session->set_flashdata('message','Successfully Updated.');
+			}
+			else{
+				header('location:'.base_url()."home/edit_employee/".$uid);
+				$this->session->set_flashdata('error','Error updating.');
+			}
+		}
+		else{
+			header('location:'.base_url()."home/edit_employee/".$uid);
+			$this->session->set_flashdata('error','Error uploading PDS.');
+		}
+	}
 
 	function upload_saln(){
 		
@@ -672,27 +730,26 @@ class Home extends CI_Controller {
 		
 		$config['upload_path'] = "./files/saln";
 		$config['allowed_types'] = 'jpg|png|doc|docx|xlsx|xls|pdf';
-		$config['encrypt_name'] = false;
+		$config['encrypt_name'] = true;
 		$config['overwrite'] = true;
         $this->load->library('upload',$config);
-		$path = "./files/saln/". str_replace(' ','_',$_FILES["saln"]["name"]);
 		$uid = $this->input->post('uid');
 		
 		if($this->upload->do_upload("saln")){
 			$file = array("upload_data" => $this->upload->data());
-			$data = array("saln_path" => $path);
+			$data = array("saln_path" => "./files/saln/".$file["upload_data"]["file_name"]);
 
-			if($this->employee->save_applicant_changes(base64_decode(base64_decode($uid)),1,$data)){
-				header('location:'.base_url()."home/edit_applicant/".$uid);
+			if($this->employee->save_employee_changes(base64_decode(base64_decode($uid)),1,$data)){
+				header('location:'.base_url()."home/edit_employee/".$uid);
 				$this->session->set_flashdata('message','Successfully Updated.');
 			}
 			else{
-				header('location:'.base_url()."home/edit_applicant/".$uid);
+				header('location:'.base_url()."home/edit_employee/".$uid);
 				$this->session->set_flashdata('error','Error updating.');
 			}
 		}
 		else{
-			header('location:'.base_url()."home/edit_applicant/".$uid);
+			header('location:'.base_url()."home/edit_employee/".$uid);
 			$this->session->set_flashdata('error','Error uploading SALN.');
 		}
 	}

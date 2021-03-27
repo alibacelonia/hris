@@ -123,6 +123,8 @@ class Employee_Model extends CI_Model{
 		$query = $this->db->get();
 		
 		$result = $query->row_array();
+        $awards = $this::get_awards($data['id']);
+        $result['awards'] = $awards;
 		return $result;
 	}
 	
@@ -135,6 +137,20 @@ class Employee_Model extends CI_Model{
 		$query = $this->db->get();
 		
 		$result = $query->row_array();
+        $awards = $this::get_awards($data['id']);
+        $result['awards'] = $awards;
+		return $result;
+    }
+
+    public function get_awards($id)
+    {
+		
+		$this->db->select('*');
+		$this->db->from('awards');
+		$this->db->where('uid', $id);
+		$query = $this->db->get();
+		
+		$result = $query->result_array();
 		return $result;
     }
 
@@ -147,7 +163,7 @@ class Employee_Model extends CI_Model{
 		}
 		else{
 			$result = $this->db->insert('employees', $data);
-			return $result;
+			return $this->db->insert_id();
 		}
 	}
     
@@ -160,16 +176,27 @@ class Employee_Model extends CI_Model{
 		}
 		else{
 			$result = $this->db->insert('applicants', $data);
-			return $result;
+			return $this->db->insert_id();
 		}
 	}
 
-    public function save_applicant_awards($id,$flag,$data)
+    public function save_awards($id,$flag,$data)
 	{
-		
-        $this->db->where('uid', $id)->delete('awards');
         foreach($data as $award){
-            $this->db->insert('awards', $award);
+            if($award['id'] == ""){
+                unset($award['id']);
+                $this->db->insert('awards', $award);
+            }
+            else{
+                $award_id = $award['id'];
+                unset($award['id']);
+			    $result = $this->db->where('id', $award_id)->update('awards',$award);
+            }
         }
+	}
+
+    public function remove_award($id)
+	{
+        $this->db->where('id', $id)->delete('awards');
 	}
 }

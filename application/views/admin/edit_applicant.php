@@ -1,3 +1,5 @@
+
+<?php //var_dump($applicant['awards']); ?>
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
@@ -146,7 +148,6 @@
                         </div>
                     </div>
                     
-
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Remarks <sup class="text-danger">*</sup></label>
@@ -163,8 +164,42 @@
                     </div>
 
                     <div class="col-sm-12" id="list_of_awards">
-                        <input type="hidden" name="award_counter" id="award_counter" value="0">
-                        
+                        <input type="hidden" name="award_counter" id="award_counter" value="<?php echo count($applicant['awards']); ?>">
+                        <?php
+                            $award_counter = 1;
+                            foreach($applicant['awards'] as $award){
+                        ?>
+                            <div class="row">
+                                <input type="hidden" id="award_id<?php echo $award_counter; ?>" name="award_id<?php echo $award_counter; ?>" value="<?php echo $award['id']; ?>">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Name <sup class="text-danger"></sup></label>
+                                        <input type="text" class="form-control" placeholder="" name="award_name<?php echo $award_counter; ?>" value="<?php echo $award['name']; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Description <sup class="text-danger"></sup></label>
+                                        <input type="text" class="form-control" placeholder="" name="award_description<?php echo $award_counter; ?>" value="<?php echo $award['description']; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Date <sup class="text-danger"></sup></label>
+                                        <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="award_date<?php echo $award_counter; ?>" value="<?php echo $award['date']; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                    <label style="visibility:hidden;">Remove</label>
+                                    <button type="button" class="btn btn-flat btn-danger" onclick="removeAward(this,<?php echo $award_counter; ?>)">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                            $award_counter++;
+                            }
+                        ?>
                     </div>
 
                     <div class="col-sm-12">
