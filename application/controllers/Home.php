@@ -355,30 +355,6 @@ class Home extends CI_Controller {
 		$salary = $this->input->post('salary');
 		$remarks = $this->input->post('remarks');
 		
-		//work history
-        $we_agency1 = $this->input->post('we_agency1');
-        $we_position1 = $this->input->post('we_position1');
-        $we_from1 = $this->input->post('we_from1');
-        $we_to1 = $this->input->post('we_to1');
-		$we_salary1 = $this->input->post('we_salary1');
-
-        $we_agency2 = $this->input->post('we_agency2');
-        $we_position2 = $this->input->post('we_position2');
-        $we_from2 = $this->input->post('we_from2');
-        $we_to2 = $this->input->post('we_to2');
-		$we_salary2 = $this->input->post('we_salary2');
-		
-        $we_agency3 = $this->input->post('we_agency3');
-        $we_position3 = $this->input->post('we_position3');
-        $we_from3 = $this->input->post('we_from3');
-        $we_to3 = $this->input->post('we_to3');
-		$we_salary3 = $this->input->post('we_salary3');
-		
-        $we_agency4 = $this->input->post('we_agency4');
-        $we_position4 = $this->input->post('we_position4');
-        $we_from4 = $this->input->post('we_from4');
-        $we_to4 = $this->input->post('we_to4');
-		$we_salary4 = $this->input->post('we_salary4');
 		
 		
 		$format = "%Y-%m-%d %h:%i %A";
@@ -409,28 +385,7 @@ class Home extends CI_Controller {
 					'leave_credits' => $leave_credits,
 					'salary' => $salary,
 					'date_updated' => $current_date,
-					'remarks' => $remarks,
-
-					'we_agency1' => $we_agency1,
-					'we_position1' => $we_position1,
-					'we_from1' => $we_from1,
-					'we_to1' => $we_to1,
-					'we_salary1' => $we_salary1,
-					'we_agency2' => $we_agency2,
-					'we_position2' => $we_position2,
-					'we_from2' => $we_from2,
-					'we_to2' => $we_to2,
-					'we_salary2' => $we_salary2,
-					'we_agency3' => $we_agency3,
-					'we_position3' => $we_position3,
-					'we_from3' => $we_from3,
-					'we_to3' => $we_to3,
-					'we_salary3' => $we_salary3,
-					'we_agency4' => $we_agency4,
-					'we_position4' => $we_position4,
-					'we_from4' => $we_from4,
-					'we_to4' => $we_to4,
-					'we_salary4' => $we_salary4
+					'remarks' => $remarks
 				);
 		$last_id = $this->employee->save_employee_changes($id,$flag, $data);
 		
@@ -453,6 +408,32 @@ class Home extends CI_Controller {
 			}
 		}
 		$this->employee->save_awards($id,$flag, $awards);
+
+		
+		//save workhistory
+		$workhistory = array();
+		for($i = 1; $i <= $this->input->post('workhistory_counter'); $i++){
+			$we_id = htmlspecialchars($this->input->post('we_id'.$i));
+			$we_agency = htmlspecialchars($this->input->post('we_agency'.$i));
+			$we_position = htmlspecialchars($this->input->post('we_position'.$i));
+			$we_from = htmlspecialchars($this->input->post('we_from'.$i));
+			$we_to = htmlspecialchars($this->input->post('we_to'.$i));
+			$we_salary = htmlspecialchars($this->input->post('we_salary'.$i));
+			if($we_agency != "" && $we_position != "" && $we_from != "" && $we_to != "" && $we_salary != ""){
+				$wh = array(
+					"id" => $we_id,
+					"agency" => $we_agency,
+					"position"  => $we_position,
+					"from"  => $we_from,
+					"to"  => $we_to,
+					"salary"  => $we_salary,
+					"uid"  =>  $flag == 0 ? $last_id : $id,
+				);
+				$workhistory[] = $wh;
+				
+			}
+		}
+		$this->employee->save_workhistory($id,$flag, $workhistory);
 
 		if($flag){
 			header('location:'.base_url()."home/edit_employee/".$tempid);
@@ -503,6 +484,7 @@ class Home extends CI_Controller {
 		if($status == ""){unset($data['status']);}
 		$last_id = $this->employee->save_applicant_changes($id,$flag, $data);
 
+		//save awards
 		$awards = array();
 		for($i = 1; $i <= $this->input->post('award_counter'); $i++){
 			$award_id = htmlspecialchars($this->input->post('award_id'.$i));
@@ -522,6 +504,7 @@ class Home extends CI_Controller {
 			}
 		}
 		$this->employee->save_awards($id,$flag, $awards);
+
 
 		if($status == "H"){
 			$data = array(
@@ -557,6 +540,12 @@ class Home extends CI_Controller {
 	public function remove_award(){
 		$id = $this->input->post('id');
 		$result = $this->employee->remove_award($id);
+		return result;
+	}
+	
+	public function remove_workhistory(){
+		$id = $this->input->post('id');
+		$result = $this->employee->remove_workhistory($id);
 		return result;
 	}
 
@@ -753,4 +742,39 @@ class Home extends CI_Controller {
 			$this->session->set_flashdata('error','Error uploading SALN.');
 		}
 	}
+
+
+	// get chart functions
+	function get_ar_1_year(){
+		$result = $this->employee->get_ar_1_year();
+		header('Content-Type: application/json');
+    	echo json_encode( $result );
+	}
+
+	function get_er_1_year(){
+		$result = $this->employee->get_er_1_year();
+		header('Content-Type: application/json');
+    	echo json_encode( $result );
+	}
+
+	function getNoOfApplicants(){
+		$year = $this->input->post('year');
+		$status = $this->input->post('status');
+		$data = $status == "*" ? array('year' => $year) : array('year' => $year, 'status' => $status);
+		$result = $this->employee->getNoOfApplicants($data);
+		
+		header('Content-Type: application/json');
+    	echo json_encode( $result );
+	}
+	
+	function getHiredEmployees(){
+		$year = $this->input->post('year');
+		$type = $this->input->post('type');
+		$data = $type == "*" ? array('year' => $year) : array('year' => $year, 'type' => $type);
+		$result = $this->employee->getHiredEmployees($data);
+		
+		header('Content-Type: application/json');
+    	echo json_encode( $result );
+	}
+	
 }

@@ -266,150 +266,64 @@ legend{
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="workhistory" role="tabpanel" aria-labelledby="workhistory-tab">
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Company/Agency<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Department of the Interior and Local Government" name="we_agency1"  value="<?php echo $employee['we_agency1']; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Position<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Year" name="we_position1"  value="<?php echo $employee['we_position1']; ?>">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>From<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="month/year" name="we_from1"  value="<?php echo $employee['we_from1']; ?>">
-                                                </div>
-                                            </div>
+                                        <div class="col-sm-12 mb-3">
+                                            <button type="button" class="btn btn-flat btn-primary btn-add-workhistory">Add Work History</button>
+                                        </div>
 
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>To<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="we_to1"  value="<?php echo $employee['we_to1']; ?>">
+                                        <div class="col-sm-12" id="list_of_workhistory">
+                                            <input type="hidden" name="workhistory_counter" id="workhistory_counter" value="<?php echo count($employee['workhistory']); ?>">
+                                            <?php
+                                                $workhistory_counter = 1;
+                                                foreach($employee['workhistory'] as $workhistory){
+                                            ?>
+                                                <div class="row mb-3">
+                                                    <input type="hidden" id="we_id<?php echo $workhistory_counter; ?>" name="we_id<?php echo $workhistory_counter; ?>" value="<?php echo $workhistory['id']; ?>">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Company/Agency <sup class="text-danger"></sup></label>
+                                                            <input type="text" class="form-control" placeholder="" name="we_agency<?php echo $workhistory_counter; ?>" value="<?php echo $workhistory['agency']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Position <sup class="text-danger"></sup></label>
+                                                            <input type="text" class="form-control" placeholder="" name="we_position<?php echo $workhistory_counter; ?>" value="<?php echo $workhistory['position']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>From <sup class="text-danger"></sup></label>
+                                                            <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="we_from<?php echo $workhistory_counter; ?>" value="<?php echo $workhistory['from']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>To <sup class="text-danger"></sup></label>
+                                                            <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="we_to<?php echo $workhistory_counter; ?>" value="<?php echo $workhistory['to']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Salary <sup class="text-danger"></sup></label>
+                                                            <input type="text" class="form-control" placeholder="" name="we_salary<?php echo $workhistory_counter; ?>" value="<?php echo $workhistory['salary']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        <div class="form-group">
+                                                        <label style="visibility:hidden;">Remove</label>
+                                                        <button type="button" class="btn btn-flat btn-danger btn-block" onclick="removeWorkHistory(this,<?php echo $workhistory_counter; ?>)">Remove</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Monthly Salary<sup class="text-danger"></sup></label>
-                                                    <input type="number" class="form-control" placeholder="" name="we_salary1"  value="<?php echo $employee['we_salary1']; ?>">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Company/Agency<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Department of the Interior and Local Government" name="we_agency2"  value="<?php echo $employee['we_agency2']; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Position<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Year" name="we_position2"  value="<?php echo $employee['we_position2']; ?>">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>From<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="month/year" name="we_from2"  value="<?php echo $employee['we_from2']; ?>">
-                                                </div>
-                                            </div>
-
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>To<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="we_to2"  value="<?php echo $employee['we_to2']; ?>">
-                                                </div>
-                                            </div>
-
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Monthly Salary<sup class="text-danger"></sup></label>
-                                                    <input type="number" class="form-control" placeholder="" name="we_salary2"  value="<?php echo $employee['we_salary2']; ?>">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Company/Agency<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Department of the Interior and Local Government" name="we_agency3"  value="<?php echo $employee['we_agency3']; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Position<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Year" name="we_position3"  value="<?php echo $employee['we_position3']; ?>">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>From<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control" placeholder="month/year" name="we_from3"  value="<?php echo $employee['we_from3']; ?>">
-                                                </div>
-                                            </div>
-
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>To<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="we_to3"  value="<?php echo $employee['we_to3']; ?>">
-                                                </div>
-                                            </div>
-
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Monthly Salary<sup class="text-danger"></sup></label>
-                                                    <input type="number" class="form-control" placeholder="" name="we_salary3"  value="<?php echo $employee['we_salary3']; ?>">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Company/Agency<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Department of the Interior and Local Government" name="we_agency4"  value="<?php echo $employee['we_agency4']; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Position<sup class="text-danger"></sup></label>
-                                                    <input type="text" class="form-control" placeholder="Year" name="we_position4"  value="<?php echo $employee['we_position4']; ?>">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>From<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="month/year" name="we_from4"  value="<?php echo $employee['we_from4']; ?>">
-                                                </div>
-                                            </div>
-
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>To<sup class="text-danger"></sup></label>
-                                                    <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="we_to4"  value="<?php echo $employee['we_to4']; ?>">
-                                                </div>
-                                            </div>
-
-                                            
-                                            <div class="col-sm-2">
-                                                <div class="form-group">
-                                                    <label>Monthly Salary<sup class="text-danger"></sup></label>
-                                                    <input type="number" class="form-control" placeholder="" name="we_salary4"  value="<?php echo $employee['we_salary4']; ?>">
-                                                </div>
-                                            </div>
+                                            <?php
+                                                $workhistory_counter++;
+                                                }
+                                                if(count($employee['workhistory']) == 0){
+                                                    echo "<span class='no_workhistory'>No Work History Yet.</span>";
+                                                }
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="awards" role="tabpanel" aria-labelledby="awards-tab">
@@ -443,10 +357,18 @@ legend{
                                                             <input onfocus="(this.type='date')" onblur="(this.type='text')"  class="form-control" placeholder="" name="award_date<?php echo $award_counter; ?>" value="<?php echo $award['date']; ?>">
                                                         </div>
                                                     </div>
+                                                    
                                                     <div class="col-sm-1">
                                                         <div class="form-group">
                                                         <label style="visibility:hidden;">Remove</label>
                                                         <button type="button" class="btn btn-flat btn-danger" onclick="removeAward(this,<?php echo $award_counter; ?>)">Remove</button>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Related Documents <sup class="text-danger"></sup></label>
+                                                            <input type="file" multiple name="related_documents<?php echo $award_counter; ?>" value="<?php echo $award['description']; ?>">
                                                         </div>
                                                     </div>
                                                 </div>

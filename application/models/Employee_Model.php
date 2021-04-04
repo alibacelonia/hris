@@ -125,6 +125,8 @@ class Employee_Model extends CI_Model{
 		$result = $query->row_array();
         $awards = $this::get_awards($data['id']);
         $result['awards'] = $awards;
+        $workhistory = $this::get_workhistory($data['id']);
+        $result['workhistory'] = $workhistory;
 		return $result;
 	}
 	
@@ -147,6 +149,18 @@ class Employee_Model extends CI_Model{
 		
 		$this->db->select('*');
 		$this->db->from('awards');
+		$this->db->where('uid', $id);
+		$query = $this->db->get();
+		
+		$result = $query->result_array();
+		return $result;
+    }
+
+    public function get_workhistory($id)
+    {
+		
+		$this->db->select('*');
+		$this->db->from('work_history');
 		$this->db->where('uid', $id);
 		$query = $this->db->get();
 		
@@ -195,8 +209,65 @@ class Employee_Model extends CI_Model{
         }
 	}
 
+    public function save_workhistory($id,$flag,$data)
+	{
+        foreach($data as $workhistory){
+            if($workhistory['id'] == ""){
+                unset($workhistory['id']);
+                $this->db->insert('work_history', $workhistory);
+            }
+            else{
+                $workhistory_id = $workhistory['id'];
+                unset($workhistory['id']);
+			    $result = $this->db->where('id', $workhistory_id)->update('work_history',$workhistory);
+            }
+        }
+	}
+
     public function remove_award($id)
 	{
         $this->db->where('id', $id)->delete('awards');
 	}
+
+    public function remove_workhistory($id)
+	{
+        $this->db->where('id', $id)->delete('work_history');
+	}
+
+
+    // get chart data functions quotes
+    function get_ar_1_year(){
+        $sql = "SELECT DISTINCT YEAR(application_date) AS year FROM applicants ORDER BY YEAR DESC"; 
+        $query = $this->db->query($sql);
+
+        $result = $query->result_array();
+		return $result;
+    }
+
+    function get_er_1_year(){
+        $sql = "SELECT DISTINCT YEAR(date_hired) AS year FROM employees ORDER BY year DESC"; 
+        $query = $this->db->query($sql);
+
+        $result = $query->result_array();
+		return $result;
+    }
+
+
+    function getNoOfApplicants($data){
+        $where = count($data) > 1 ? "AND YEAR(a.application_date) = ? AND a.status = ?" : "AND YEAR(a.application_date) = ?";
+        $sql = "SELECT m.full as month,COUNT(a.id) AS count FROM months m LEFT JOIN applicants a ON m.id = MONTH(a.application_date)  ".$where." GROUP BY m.three ORDER BY m.id";
+        $query = $this->db->query($sql,$data);
+
+        $result = $query->result_array();
+		return $result;
+    }
+
+    function getHiredEmployees($data){
+        $where = count($data) > 1 ? "AND YEAR(e.date_hired) = ? AND e.employee_type = ?" : "AND YEAR(e.date_hired) = ?";
+        $sql = "SELECT FULL AS month,COUNT(e.id) AS count FROM months m LEFT JOIN employees e ON m.id = MONTH(e.date_hired) ".$where." GROUP BY FULL ORDER BY m.id";
+        $query = $this->db->query($sql,$data);
+
+        $result = $query->result_array();
+		return $result;
+    }
 }
