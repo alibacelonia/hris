@@ -153,6 +153,23 @@ class Employee_Model extends CI_Model{
 		$query = $this->db->get();
 		
 		$result = $query->result_array();
+        $counter = 0;
+        foreach($result as $award){
+            $result[$counter]["related_documents"] = $this::get_related_documents($award['id']);
+            $counter++;
+        }
+		return $result;
+    }
+
+    public function get_related_documents($id)
+    {
+		
+		$this->db->select('*');
+		$this->db->from('related_documents');
+		$this->db->where('award_id', $id);
+		$query = $this->db->get();
+		
+		$result = $query->result_array();
 		return $result;
     }
 
@@ -194,17 +211,27 @@ class Employee_Model extends CI_Model{
 		}
 	}
 
-    public function save_awards($id,$flag,$data)
-	{
+    public function save_awards($id,$flag,$data){
         foreach($data as $award){
+            $related_docs = $award['related_documents'];
+            unset($award['related_documents']);
             if($award['id'] == ""){
                 unset($award['id']);
                 $this->db->insert('awards', $award);
+                $related_docs['award_id'] = $this->db->insert_id();
+                foreach($related_docs as $file){
+                    $this->db->insert('related_documents', $file);
+                }
             }
             else{
                 $award_id = $award['id'];
                 unset($award['id']);
-			    $result = $this->db->where('id', $award_id)->update('awards',$award);
+			    $this->db->where('id', $award_id)->update('awards',$award);
+                
+                foreach($related_docs as $file){
+                    $file['award_id'] = $award_id;
+                    $this->db->insert('related_documents', $file);
+                }
             }
         }
 	}

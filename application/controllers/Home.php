@@ -9,8 +9,7 @@ class Home extends CI_Controller {
 		$this->load->helper('url');
 	}
 
-	public function index()
-	{
+	public function index(){
 		
 		$data["title"] = "Home";
 		$data["current_page"] = "home";
@@ -109,8 +108,7 @@ class Home extends CI_Controller {
         echo json_encode($output);
     }
 
-	public function applicants()
-	{
+	public function applicants(){
 		
 		$data["title"] = "Applicants";
 		$data["current_page"] = "applicants";
@@ -132,8 +130,7 @@ class Home extends CI_Controller {
 		}
 
 	}
-	public function employees()
-	{
+	public function employees(){
 		
 		$data["title"] = "Employees";
 		$data["current_page"] = "employees";
@@ -156,8 +153,7 @@ class Home extends CI_Controller {
 
 	}
 
-	public function add_employee()
-	{
+	public function add_employee(){
 		
 		$data['id'] = "";
 		$data["title"] = "Add Employee";
@@ -180,8 +176,7 @@ class Home extends CI_Controller {
 
 	}
 
-	public function add_applicant()
-	{
+	public function add_applicant(){
 		
 		$data['id'] = "";
 		$data["title"] = "Add Applicant";
@@ -204,8 +199,7 @@ class Home extends CI_Controller {
 
 	}
 
-	public function edit_employee()
-	{
+	public function edit_employee(){
 		
 		$id = base64_decode(base64_decode($this->uri->segment(3)));
 		
@@ -232,8 +226,7 @@ class Home extends CI_Controller {
 
 	}
 
-	public function employee_details()
-	{
+	public function employee_details(){
 		
 		$id = base64_decode(base64_decode($this->uri->segment(3)));
 		
@@ -259,8 +252,7 @@ class Home extends CI_Controller {
 		}
 
 	}
-	public function edit_applicant()
-	{
+	public function edit_applicant(){
 		if($this->uri->segment(3)){
 			
 			$id = base64_decode(base64_decode($this->uri->segment(3)));
@@ -292,8 +284,7 @@ class Home extends CI_Controller {
 
 	}
 	
-	public function applicant_details()
-	{
+	public function applicant_details(){
 		
 		$id = base64_decode(base64_decode($this->uri->segment(3)));
 		
@@ -320,8 +311,7 @@ class Home extends CI_Controller {
 
 	}
 
-	public function save_changes()
-	{
+	public function save_changes(){
 		$tempid = $this->input->post('id');
 		$id = base64_decode(base64_decode($tempid));
 		$flag = $this->input->post('flag');
@@ -391,6 +381,39 @@ class Home extends CI_Controller {
 		
 		$awards = array();
 		for($i = 1; $i <= $this->input->post('award_counter'); $i++){
+			
+			$count = count($_FILES['related_documents'.$i]['name']);
+			$related_documents = array();
+			for($j=0;$j<$count;$j++){
+				if(!empty($_FILES['related_documents'.$i]['name'][$j])){
+
+					$_FILES['file']['name'] = $_FILES['related_documents'.$i]['name'][$j];
+					$_FILES['file']['type'] = $_FILES['related_documents'.$i]['type'][$j];
+					$_FILES['file']['tmp_name'] = $_FILES['related_documents'.$i]['tmp_name'][$j];
+					$_FILES['file']['error'] = $_FILES['related_documents'.$i]['error'][$j];
+					$_FILES['file']['size'] = $_FILES['related_documents'.$i]['size'][$j];
+					
+					$config['upload_path'] = './files/related_documents'; 
+					$config['allowed_types'] = 'jpg|png|doc|docx|xlsx|xls|pdf';
+					$config['encrypt_name'] = true;
+					$config['overwrite'] = true;
+			
+					$this->load->library('upload',$config); 
+			
+					if($this->upload->do_upload('file')){
+						$file = array("upload_data" => $this->upload->data());
+						$temp_rd = array(
+							"path" => "./files/related_documents/".$file["upload_data"]["file_name"],
+							"name" => $_FILES['related_documents'.$i]['name'][$j],
+							"extension" => $file["upload_data"]["file_ext"],
+							"size" => $file["upload_data"]["file_size"],
+							"date_uploaded" => date('Y-m-d H:i:s')
+						);
+						$related_documents[] = $temp_rd;
+					}
+				}
+			}
+
 			$award_id = htmlspecialchars($this->input->post('award_id'.$i));
 			$award_name = htmlspecialchars($this->input->post('award_name'.$i));
 			$award_description = htmlspecialchars($this->input->post('award_description'.$i));
@@ -402,10 +425,12 @@ class Home extends CI_Controller {
 					"description"  => $award_description,
 					"date"  => $award_date,
 					"uid"  => $flag == 0 ? $last_id : $id,
+					"related_documents" => $related_documents
 				);
 				$awards[] = $award;
 				
 			}
+
 		}
 		$this->employee->save_awards($id,$flag, $awards);
 
@@ -445,8 +470,7 @@ class Home extends CI_Controller {
 		}
 	}
 
-	public function save_changes_applicant()
-	{
+	public function save_changes_applicant(){
 		$tempid = $this->input->post('id');
 		$id = base64_decode(base64_decode($tempid));
 		$flag = $this->input->post('flag');
@@ -540,17 +564,16 @@ class Home extends CI_Controller {
 	public function remove_award(){
 		$id = $this->input->post('id');
 		$result = $this->employee->remove_award($id);
-		return result;
+		return $result;
 	}
-	
+
 	public function remove_workhistory(){
 		$id = $this->input->post('id');
 		$result = $this->employee->remove_workhistory($id);
-		return result;
+		return $result;
 	}
 
-	public function save_account_info()
-	{
+	public function save_account_info(){
 		$session_data = $this->session->userdata('user');
 		$firstname = $this->input->post('firstname');
 		$middlename = $this->input->post('middlename');
@@ -607,8 +630,7 @@ class Home extends CI_Controller {
 		}
 	}
 
-	public function reports()
-	{
+	public function reports(){
 		
 		$data["title"] = "Reports";
 		$data["current_page"] = "reports";
@@ -630,8 +652,7 @@ class Home extends CI_Controller {
 
 	}
 	
-	public function account()
-	{
+	public function account(){
 		
 		$data["title"] = "Account";
 		$data["current_page"] = "account";

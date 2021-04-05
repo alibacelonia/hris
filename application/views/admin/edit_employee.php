@@ -1,3 +1,4 @@
+
 <style>
 
 
@@ -16,6 +17,12 @@ legend{
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
+        
+            <!-- <div class="row">
+                <div class="col-lg-12">
+                    <?php echo json_encode($employee['awards'], JSON_PRETTY_PRINT);?>
+                </div>
+            </div> -->
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark"><?php echo $title; ?></h1>
@@ -31,7 +38,7 @@ legend{
     </div>
     <div class="content-header">
         <div class="container-fluid">
-            <form action="<?php echo base_url();?>home/save_changes" method="post">
+            <form action="<?php echo base_url();?>home/save_changes" method="post" enctype="multipart/form-data">
                 <?php
                     if($this->session->flashdata('message')){
                         ?>
@@ -368,7 +375,25 @@ legend{
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label>Related Documents <sup class="text-danger"></sup></label>
-                                                            <input type="file" multiple name="related_documents<?php echo $award_counter; ?>" value="<?php echo $award['description']; ?>">
+                                                            <input type="file" multiple name="related_documents<?php echo $award_counter; ?>[]">
+                                                        </div>
+                                                        <div class="row" id="related_document_list">
+                                                            <?php
+                                                                foreach($award["related_documents"] as $file){
+                                                            ?>
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <h5 class="card-title"><?php echo $file['name']; ?></h5>
+                                                                            <div class="card-tools">
+                                                                                <button type="button" class="btn btn-success btn-xs" data-card-widget="remove">
+                                                                                    <i class="fas fa-times"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                            <?php
+                                                                }
+                                                            ?>
                                                         </div>
                                                     </div>
                                                 </div>
