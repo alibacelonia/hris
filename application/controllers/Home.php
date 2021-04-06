@@ -381,8 +381,10 @@ class Home extends CI_Controller {
 		
 		$awards = array();
 		for($i = 1; $i <= $this->input->post('award_counter'); $i++){
-			
-			$count = count($_FILES['related_documents'.$i]['name']);
+			$count = 0;
+			if(!empty($_FILES)){
+				$count = count($_FILES['related_documents'.$i]['name']);
+			}
 			$related_documents = array();
 			for($j=0;$j<$count;$j++){
 				if(!empty($_FILES['related_documents'.$i]['name'][$j])){

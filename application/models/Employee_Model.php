@@ -218,9 +218,11 @@ class Employee_Model extends CI_Model{
             if($award['id'] == ""){
                 unset($award['id']);
                 $this->db->insert('awards', $award);
-                $related_docs['award_id'] = $this->db->insert_id();
-                foreach($related_docs as $file){
-                    $this->db->insert('related_documents', $file);
+                if($related_docs){
+                    $related_docs['award_id'] = $this->db->insert_id();
+                    foreach($related_docs as $file){
+                        $this->db->insert('related_documents', $file);
+                    }
                 }
             }
             else{
@@ -228,9 +230,11 @@ class Employee_Model extends CI_Model{
                 unset($award['id']);
 			    $this->db->where('id', $award_id)->update('awards',$award);
                 
-                foreach($related_docs as $file){
-                    $file['award_id'] = $award_id;
-                    $this->db->insert('related_documents', $file);
+                if($related_docs){
+                    foreach($related_docs as $file){
+                        $file['award_id'] = $award_id;
+                        $this->db->insert('related_documents', $file);
+                    }
                 }
             }
         }
