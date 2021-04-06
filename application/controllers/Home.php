@@ -567,6 +567,14 @@ class Home extends CI_Controller {
 		return $result;
 	}
 
+	public function remove_document(){
+		$id = $this->input->post('id');
+		$filename = $this->input->post('filename');
+		$result = $this->employee->remove_document($id);
+		unlink($filename);
+		return $result;
+	}
+
 	public function remove_workhistory(){
 		$id = $this->input->post('id');
 		$result = $this->employee->remove_workhistory($id);

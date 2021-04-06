@@ -314,6 +314,27 @@ $(function () {
     }
 
   }
+
+  function removeRelatedDocuments(id,filename){
+    var r = confirm("Are you sure you want to remove this document?");
+
+    if (r == true) {
+      $.ajax({
+        type: "POST",
+        url: "<?php echo base_url().'home/remove_document';?>",
+        data: {
+          "id": id,
+          "filename": filename
+        },
+        success: function(response) {
+          $('.rd'+id).remove();
+        },
+        error: function(response) {
+            alert("Error removing work history.");
+        }
+      });
+    }
+  }
 </script>
 <script>
 am4core.ready(function() {
@@ -412,6 +433,8 @@ function doSomeAjaxRequest(config){
   });
   return data;
 }
+
+
 
 //============================================ # of Hired Applicants
 function createLineChartSolo(config){

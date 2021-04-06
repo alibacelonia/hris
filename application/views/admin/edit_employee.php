@@ -381,16 +381,10 @@ legend{
                                                             <?php
                                                                 foreach($award["related_documents"] as $file){
                                                             ?>
-                                                                    <div class="card">
-                                                                        <div class="card-header">
-                                                                            <h5 class="card-title"><?php echo $file['name']; ?></h5>
-                                                                            <div class="card-tools">
-                                                                                <button type="button" class="btn btn-success btn-xs" data-card-widget="remove">
-                                                                                    <i class="fas fa-times"></i>
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                <div class="btn-group mr-1 rd<?php echo $file['id']; ?>">
+                                                                    <a class="btn btn-warning" href="<?php echo base_url().$file['path']; ?>" target="_blank"><?php echo $file['name']; ?></a>
+                                                                    <button type="button" class="btn btn-warning" onclick="removeRelatedDocuments(<?php echo $file['id']; ?>,'<?php echo $file['path']; ?>')"><span class="fa fa-times"></span></button>
+                                                                </div>
                                                             <?php
                                                                 }
                                                             ?>

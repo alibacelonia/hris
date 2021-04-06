@@ -251,6 +251,11 @@ class Employee_Model extends CI_Model{
         }
 	}
 
+    public function remove_document($id)
+	{
+        $this->db->where('id', $id)->delete('related_documents');
+	}
+
     public function remove_award($id)
 	{
         $this->db->where('id', $id)->delete('awards');
